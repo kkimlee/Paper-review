@@ -91,6 +91,10 @@ EMS 최적화 단계의 주된 목표는 디젤 엔진과 ESS간의 전력 분�
 
 ![equation 1](./img/equation1.PNG)
 
+여기서 i와 N은 각각 지수와 디젤 엔진의 수임. 목적 함수에서 디젤 엔진의 연료 소비는 방정식 (2)에 표시된 것처럼 엔진 제동력의 선형 함수로 모델링 됨.
 
+![equation 2](./img/equation2.PNG)
+
+여기서 mf_uel
 
 
