@@ -95,6 +95,6 @@ EMS 최적화 단계의 주된 목표는 디젤 엔진과 ESS간의 전력 분�
 
 ![equation 2](./img/equation2.PNG)
 
-여기서 mf_uel
+여기서 mf<sub>mel</sub>
 
 
