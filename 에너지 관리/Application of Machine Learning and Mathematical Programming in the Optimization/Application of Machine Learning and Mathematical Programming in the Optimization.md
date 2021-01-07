@@ -82,6 +82,8 @@ k-means와 k-medoids는 유클리드 거리에 의존하는 두 가지 비지도
 
 ![figure 4](./img/figure4.PNG)
 
+![nonmenclature](./img/nonmenclature.PNG)
+
 #### 2.2.3 Optimizer-Mathematical programming
 세그먼트화 된 수요는 최적화 섹션에서 사용되어 다음 작업주기를 위한 ESS와 엔진 간의 최적 로드 공유를 결정함. 이 섹션에서 제안하는 접근 방식은 MILP 문제로 모델링됨.
 
