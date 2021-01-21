@@ -20,9 +20,9 @@ value_data = data.drop(['GT Compressor decay state coefficient.', 'GT Turbine de
 label_data = data[['GT Compressor decay state coefficient.', 'GT Turbine decay state coefficient.']]
 
 # pca
-pca = PCA(n_components=2)
+pca = PCA()
 pca_data = pca.fit_transform(value_data)
-pca_data = pd.DataFrame(data = pca_data, columns = ['pca 1', 'pca 2'])
+pca_data = pd.DataFrame(data = pca_data)
 
 # train, test 데이터 분리
 train_data = value_data.iloc[:int(data_len * 0.8)]
@@ -41,12 +41,12 @@ test_pca_label = label_data.iloc[int(data_len * 0.8):]
 # 16개의 변수 입력
 # 은닉층 8-6-4-2
 # 2개의 값 출력
-model = keras.Sequential([
-    keras.layers.Dense(8, input_shape=(16, )),
-    keras.layers.Dense(6),
-    keras.layers.Dense(4),
-    keras.layers.Dense(2),
-    keras.layers.Dense(2)])
+# model = keras.Sequential([
+#     keras.layers.Dense(8, input_shape=(16, )),
+#     keras.layers.Dense(6),
+#     keras.layers.Dense(4),
+#     keras.layers.Dense(2),
+#     keras.layers.Dense(2)])
 
 # # 은닉층 8-6-4
 # # 2개의 값 출력
@@ -63,16 +63,46 @@ model = keras.Sequential([
 #     keras.layers.Dense(6),
 #     keras.layers.Dense(2)])
 
+# 은닉층 5-4-3
+# 2개의 값 출력
+# model = keras.Sequential([
+#     keras.layers.Dense(5, input_shape=(16, )),
+#     keras.layers.Dense(4),
+#     keras.layers.Dense(3),
+#     keras.layers.Dense(2)])
+
+# 은닉층 6-4-3
+# 2개의 값 출력
+# model = keras.Sequential([
+#     keras.layers.Dense(6, input_shape=(16, )),
+#     keras.layers.Dense(4),
+#     keras.layers.Dense(3),
+#     keras.layers.Dense(2)])
+
+# 은닉층 7-5-3
+# 2개의 값 출력
+model = keras.Sequential([
+    keras.layers.Dense(7, input_shape=(16, )),
+    keras.layers.Dense(5),
+    keras.layers.Dense(3),
+    keras.layers.Dense(2)])
+
 # 모델 구조 출력
 model.summary()
 
-# 모델 최적화
+# 모델 생성 
 model.compile(optimizer=Adam(), loss='mean_squared_error', metrics=['mse'])
 
 # 학습(raw)
-model.fit(train_data, train_label, epochs=1000, validation_data=(test_data, test_label))
+# history = model.fit(train_data, train_label, epochs=1000, validation_data=(test_data, test_label))
 
-# # 학습(pca)
-# model.fit(train_pca_data, train_pca_label, epochs=1000, validation_data=(test_pca_data, test_pca_label))
+# 학습(pca)
+history = model.fit(train_pca_data, train_pca_label, epochs=1000, validation_data=(test_pca_data, test_pca_label))
 
-
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('model mse')
+plt.ylabel('mse')
+plt.xlabel('epoch')
+plt.legend(['train', 'val'])
+plt.show()
