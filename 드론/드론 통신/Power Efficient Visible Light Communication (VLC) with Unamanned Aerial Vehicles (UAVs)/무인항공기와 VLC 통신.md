@@ -29,7 +29,7 @@ UAV의 최적 배치에 관한 많은 선행 기술이 있습니다 [2] – [4].
 수치 결과는 제안 된 방식이 고정 된 UAV 위치를 가진 두 개의 기본 알고리즘에 비해 최소 53.8 %의 전력 소비를 줄일 수 있음을 입증합니다. 
 우리가 아는 한 이것은 사용자의 데이터 속도 및 조명 요구 사항을 충족시키기 위해 VLC 및 UAV의 사용을 공동으로 고려한 첫 번째 작업입니다.
   
-![fig 1](./img/fig1.png)  
+![fig 1](./img/fig1.PNG)  
 ###### [fig 1] The application scenarios of VLC with UAV
   
 ## 2. SYSTEM MODEL AND PROBLEM FORMULATION
@@ -37,14 +37,14 @@ U 사용자와 통신하는 K UAV가 다운 링크 통신을 제공하는 지리
 VLC의 지향성 전송 특성을 고려하여 각 사용자가 하나의 UAV와 연관되어 있다고 가정합니다.
 VLC 링크의 채널 이득은 다음과 같이 나타낼 수 있습니다.  
   
-![equation 1](./img/equation1.png)
+![equation 1](./img/equation1.PNG)
   
 여기서 h<sub>ij</sub>는 UAV i와 사용자 j 사이의 채널 이득, A는 검출기 영역, d<sub>ij</sub>는 UAV i와 사용자 j 사이의 거리입니다. 또한 m = − ln 2 / ln (cos Φ1 / 2), 여기서 Φ1 / 2는 송신기 반각, ψ<sub>ij</sub>는 입사각, φ<sub>ij</sub>는 조사 각, Ψ<sub>c</sub>는 수신기 시야 ( FOV) 반각, g (ψ<sub>ij</sub>)는 집광기의 이득이며 다음과 같이 주어질 수 있습니다.  
   
-![equation](./img/equation.png)  
+![equation](./img/equation.PNG)  
   
 여기서 n<sub>r</sub>은 굴절률입니다. 단순화를 위해 모든 UAV의 높이가 z<sub>u</sub><sup>1</sup>로 고정되고 사용자의 높이가 0 인 2 차원 배포 시나리오를 고려합니다. 
-UAV (x<sub>i</sub>, y<sub>i</sub>, z<sub>u</sub>)의 위치가 주어지면 i = 1, 2,. . . 사용자의 K 및 q (x<sub>j</sub>, y<sub>j</sub>, 0), j = 1, 2,. . . U, 우리는 d<sub>ij</sub> = ![](./img/img1.png) 및 cos φ<sub>ij</sub> = cosψ<sub>ij</sub> = ![](./img/img2.png)입니다. 
+UAV (x<sub>i</sub>, y<sub>i</sub>, z<sub>u</sub>)의 위치가 주어지면 i = 1, 2,. . . 사용자의 K 및 q (x<sub>j</sub>, y<sub>j</sub>, 0), j = 1, 2,. . . U, 우리는 d<sub>ij</sub> = ![](./img/img1.png) 및 cos φ<sub>ij</sub> = cosψ<sub>ij</sub> = ![](./img/img2.PNG)입니다. 
 이러한 각도는 송신기와 수신기가 각각 수직 아래쪽과 위쪽에 있다는 가정을 기반으로하여 얻은 것입니다. 
 여기에서 카메라 또는 포토 다이오드는 지상 사용자에게 수신기로 배치하여 광학 신호를 전기 신호로 변환하고 사용자가 이동할 때 통신을 지원할 수 있습니다.
   
@@ -52,13 +52,13 @@ UAV i와 사용자 j 사이의 VLC 링크의 채널 용량 C는 ![](./img/img3.p
 여기서 σ<sub>w</sub>는 가산 성 백색 가우스 잡음의 표준 편차입니다. ξ는 조명 타겟이고 P<sub>i</sub>는 UAV<sub>i</sub>의 광학 파워입니다.
 LED 지원 UAV는 희미한 시나리오 (예 : 야간) [1]에 배치 될 가능성이 더 높으므로 주변 광의 효과를 가우스 노이즈로 모델링 할 수 있습니다. 
 우리는 각 사용자에게 데이터 속도 제약 C<sub>th</sub>가 있다고 가정합니다. 
-따라서 사용자 j와 관련된 UAV<sub>i</sub>의 필요한 최소 광 강도는![](./img/img4.png)로 표현할 수 있습니다.
+따라서 사용자 j와 관련된 UAV<sub>i</sub>의 필요한 최소 광 강도는![](./img/img4.PNG)로 표현할 수 있습니다.
 VLC는 통신과 조명을 모두 포함하므로 조명 제약도 고려해야합니다. 
 조도는 조명 된 표면의 밝기를 의미하며 η<sub>j</sub> = ξP<sub>i</sub>h<sub>ij</sub> [6]에 비례합니다. 
 그림 1의 평면도에서 UAV와 사용자 간의 거리를 줄여서 소비되는 전송 전력을 줄 이도록 UAV를 신중하게 구성 할 수 있음을 알 수 있습니다. 
 따라서 관련 최적화 문제는 다음과 같이 공식화됩니다.  
   
-![equation 2](./img/equation2.png)  
+![equation 2](./img/equation2.PNG)  
   
 여기서 U<sub>i</sub>는 UAV i에 의해 서비스되는 사용자 집합이고 i<sub>j</sub>는 사용자 j에 서비스를 제공하는 UAV i의 인덱스입니다. 
 또한 N은 UAV의 집합이고 η<sub>th</sub>는 수신기의 조명 임계 값입니다. 
@@ -83,20 +83,20 @@ VLC는 낮은 복잡성으로 정확한 위치 파악을 달성 할 수 있기 �
 또한 UAV는 가장 멀리있는 사용자의 요구 사항이 충족되면 다른 모든 사용자의 요구 사항이 충족되므로 가장 멀리있는 사용자 만 고려하면됩니다. 
 이러한 관찰을 기반으로 각 UAV i에 대한 최적화 문제는 다음과 같이 표현할 수 있습니다.  
   
-![equation3](./img/equation3.png)  
+![equation3](./img/equation3.PNG)  
   
 여기서 j<sub>i</sub><sup>∗</sup> 는 UAV i에서 가장 먼 사용자를 나타냅니다. 
 가장 먼 사용자는 UAV의 위치에 따라 동적으로 변경됩니다. 
 각 UAV의 최적 위치는 다음 정리에 따라 결정될 수 있습니다.  
 
 정리 1. 고정 셀 연관의 경우 UAV i의 고유 한 최적 위치는 UAV i의 조명 영역에있는 모든 사용자를 포함하는 가장 작은 둘러싸는 디스크의 중앙에 존재합니다.  
-증명. (1)을 (3a)로 대체하면 ![](./img/img5.png), 여기서 ![](./img/img6.png).
-마찬가지로 (3b)에 대해 ![](./img/img7.png), 여기서 ![](./img/img8.png), ![](./img/img9.png).
+증명. (1)을 (3a)로 대체하면 ![](./img/img5.PNG), 여기서 ![](./img/img6.PNG).
+마찬가지로 (3b)에 대해 ![](./img/img7.PNG), 여기서 ![](./img/img8.PNG), ![](./img/img9.PNG).
 따라서 (3)은 다음 방정식과 동일합니다.  
   
-![equation4](./img/equation4.png)
+![equation4](./img/equation4.PNG)
   
-여기서 max [·, ·]는 입력의 최대 값을 출력하고 r<sub>ij<sub>i</sub><sup>*</sup></sub>는 UAV i와 사용자 j<sub>i</sub><sup>*</sup> x-y 평면 사이의 수평 거리 이며 r<sub>ij<sub>*i</sub></sub> = ![](./img/img10.png)로 정의됩니다.
+여기서 max [·, ·]는 입력의 최대 값을 출력하고 r<sub>ij<sub>i</sub><sup>*</sup></sub>는 UAV i와 사용자 j<sub>i</sub><sup>*</sup> x-y 평면 사이의 수평 거리 이며 r<sub>ij<sub>*i</sub></sub> = ![](./img/img10.PNG)로 정의됩니다.
 시스템 매개 변수가 주어지면 변수 M, N 및 V는 일정합니다. 또한, 변수 r<sub>ij<sub>*i</sub></sub>는 j<sub>i</sub> ∈ U<sub>i</sub>에 대한 제약 조건 r<sub>ij<sub>i</sub><sup>*</sup</sub> ≥ r<sub>ij<sub>i</sub></sub>를 포함하며, 여기서 j<sub>i</sub>는 UAV i가 서비스하는 j 번째 사용자를 나타냅니다. 
 따라서 문제 (4)의 목표는 반경 r<sub>ij<sub>i</sub><sup>*</sup></sub>i를 최소화하는 둘러싸는 디스크 중심의 최적 위치를 찾는 것입니다.  
   
@@ -112,7 +112,7 @@ VLC는 낮은 복잡성으로 정확한 위치 파악을 달성 할 수 있기 �
 여기서 U<sub>i</sub>는 UAV i가 서비스하는 사용자 수이고 D<sub>j-1</sub>은 1부터 j-1까지의 모든 이전 사용자를 포함하는 디스크입니다. 
 디스크 D<sub>U<sub>i</sub></sub>와 그 반경 r<sub>i</sub> (그림 2)에서 UAV i의 최소 전력은 ![](./img/img12.png)로 유도 할 수 있습니다.  
   
-![fig 2](./img/fig2.png)  
+![fig 2](./img/fig2.PNG)  
 ###### [fig 2] Graphical representation of the proposed UAV location optimization approach.  
 
 ### B. Cell Association Optimization
@@ -120,11 +120,11 @@ VLC는 낮은 복잡성으로 정확한 위치 파악을 달성 할 수 있기 �
 이 거리는 UAV의 위치뿐만 아니라 사용자의 위치에 따라 다르므로 다음으로 셀 연결에 의한 전력 소비를 더욱 줄입니다. 
 최적화 문제는 다음과 같이 공식화됩니다.  
   
-![equation5](./img/equation5.png)
+![equation5](./img/equation5.PNG)
   
 마찬가지로 (5)에서 우리는 (6)을 찾을 수 있습니다.  
   
-![equation6](./img/equation6.png)  
+![equation6](./img/equation6.PNG)  
   
 (6)에서 문제가 고전적인 클러스터링 문제 [9]가되는 것을 볼 수 있습니다. 
 즉, 모든 사용자를 처리하면서 각 디스크의 비용 d<sup>m+3</sup><sub>ij<sup>*</sup><sub>i</sub></sub>를 최소화합니다. 
@@ -149,7 +149,7 @@ VLC는 낮은 복잡성으로 정확한 위치 파악을 달성 할 수 있기 �
 VLC 링크의 입사 및 조사 각도와 같은 매개 변수는 UAV 및 사용자의 위치에 의해 결정되므로 표 I에 나열되지 않습니다. 
 통계 결과는 다수의 독립적 인 실행에 대해 평균화됩니다.
 
-![table 1](./img/table1.png)  
+![table 1](./img/table1.PNG)  
   
 초기 상태에서 UAV는 각 사각형 하위 영역의 중앙에 있으며 각 하위 영역의 사용자는 하위 영역의 UAV와 연결됩니다. 
 목표 지역이 고정되면 중심이 UAV를위한 최적의 위치 인 것은 잘 알려져 있으며 [10], 이것은 우리의 시뮬레이션에서 기본 계획으로 사용됩니다. 
@@ -158,7 +158,7 @@ VLC 링크의 입사 및 조사 각도와 같은 매개 변수는 UAV 및 사용
 즉, 항상 가장 먼 사용자가 서비스 영역에서 중심까지 가장 먼 지오메트리 지점에 있다고 가정합니다.
 또한 UAV 위치 최적화 만 (UAVOO)으로 배포를 시뮬레이션하여 UAV 위치 최적화 및 셀 연관 최적화로 얻은 성능 향상을 명확하게 보여줍니다.  
   
-![fig 3](./img/fig3.png)
+![fig 3](./img/fig3.PNG)
 ###### [Fig 3] The required sum transmit power of four UAVs at different heights versus the data rate threshold of users.  
   
 그림 3에서는 서로 다른 데이터 속도와 조명 임계 값에 필요한 총 전송 전력을 분석합니다. 
@@ -168,7 +168,7 @@ VLC 링크의 입사 및 조사 각도와 같은 매개 변수는 UAV 및 사용
 이것은 고도가 높을수록 UAV가 더 큰지면을 덮을 수 있음을 의미하기 때문입니다. 
 셀 연결 프로세스를 적절하게 최적화하면 더 적은 UAV를 배포 할 수 있으므로 성능 향상이 더욱 두드러집니다.  
   
-![fig 4](./img/fig4.png)
+![fig 4](./img/fig4.PNG)
 ###### [fig 4] Fig. 4. The data rate and received illumination level of each user. Two cases are considered: In case 1, Cth = 1.2, th = 0.1; In case 2, Cth = 1.8, th = 0.6.  
   
 그림 4는 각 사용자의 데이터 전송률과 수신 조도 수준을 보여줍니다. 두 가지 일반적인 경우가 고려됩니다.
