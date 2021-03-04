@@ -110,7 +110,7 @@ VLC는 낮은 복잡성으로 정확한 위치 파악을 달성 할 수 있기 �
 정리 1에서 사용자의 위치가 주어지면 가장 작은 둘러싸는 디스크는 무작위 증분 구성 [8]으로 얻을 수 있습니다. 
 이 방법의 그래픽 표현은 그림 2에 나와 있습니다. 
 여기서 U<sub>i</sub>는 UAV i가 서비스하는 사용자 수이고 D<sub>j-1</sub>은 1부터 j-1까지의 모든 이전 사용자를 포함하는 디스크입니다. 
-디스크 D<sub>U<sub>i</sub></sub>와 그 반경 r<sub>i</sub> (그림 2)에서 UAV i의 최소 전력은 ![](./img/img12.png)로 유도 할 수 있습니다.  
+디스크 D<sub>U<sub>i</sub></sub>와 그 반경 r<sub>i</sub> 그림 2에서 UAV i의 최소 전력은 ![](./img/img12.png)로 유도 할 수 있습니다.  
   
 ![fig 2](./img/fig2.PNG)  
 ###### [fig 2] Graphical representation of the proposed UAV location optimization approach.  
