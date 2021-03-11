@@ -152,7 +152,7 @@ L2 정규화 된 고정 길이 설명 자의 조밀 한 맵을 출력하기 위�
 ![fig 4](./img/fig4.PNG)
 ###### Synthetic Pre-Training. We use our Synthetic Shapes dataset consisting of rendered triangles, quadrilaterals, lines, cubes, checkerboards, and stars each with ground truth corner locations. The dataset is used to train the MagicPoint convolutional neural network, which is more robust to noise when compared to classical detectors.  
   
-## 4.2. MagicPoint
+### 4.2. MagicPoint
 우리는 SuperPoint 아키텍처의 검출기 경로 (설명자 헤드 무시)를 사용하고 합성 모양에 대해 훈련합니다. 
 결과 모델을 MagicPoint라고합니다.  
   
