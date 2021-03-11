@@ -163,3 +163,46 @@ Synthetic Shapes 데이터 세트의 1000 개의 홀드 아웃 이미지에서 �
   
 ![tabel 2](./img/tabel2.PNG)  
   
+MagicPoint 감지기는 Synthetic Shapes에서 매우 잘 수행되지만 실제 이미지로 일반화됩니까? 
+나중에 섹션 7.2에서 제시 할 결과를 요약하면 대답은 '예'이지만 우리가 바라는대로는 아닙니다. 
+MagicPoint는 실제 이미지, 특히 테이블, 의자 및 창문과 같이 모서리와 같은 구조가 강한 장면에서 합리적으로 잘 작동한다는 사실에 놀랐습니다.
+안타깝게도 모든 자연 이미지 공간에서 동일한 기존 검출기와 비교할 때 시점 변경에서 반복성에 대해 성능이 떨어집니다. 
+이것은 우리가 Homographic Adaptation이라고 부르는 실제 이미지에 대한 훈련을위한 자체 감독 접근 방식에 동기를 부여했습니다.  
+  
+## 5. Homographic Adaptation
+우리의 시스템은 기본 관심 지점 감지기와 대상 도메인 (예 : MS-COCO)의 레이블이 지정되지 않은 대규모 이미지 세트에서 자체적으로 부트 스트랩합니다. 
+자가지도 패러다임 (자체 학습이라고도 함)에서 작동하는 경우 먼저 대상 도메인의 각 이미지에 대해 가상 현실 관심 지점 위치 집합을 생성 한 다음 기존의지도 학습 기계를 사용합니다. 
+우리 방법의 핵심은 입력 이미지의 뒤틀린 사본에 무작위 동형을 적용하고 결과를 결합하는 프로세스입니다.
+이 프로세스를 Homographic Adaptation이라고합니다 (그림 5 참조).  
+  
+![fig 5](./img/fig5.PNG)
+###### Homographic Adaptation. Homographic Adaptation is a form of self-supervision for boosting the geometric consistency of an interest point detector trained with convolutional neural networks. The entire procedure is mathematically defined in Equation 10.  
+
+### 5.1. Formulation
+Homographies는 카메라 중심을 중심으로 회전하는 카메라 동작, 물체와 거리가 먼 장면 및 평면형 장면에 대해 정확하거나 거의 정확한 이미지 대 이미지 변환을 제공합니다. 
+또한 대부분의 세계가 합리적으로 평면이기 때문에 동일한 3D 포인트를 다른 시점에서 볼 때 발생하는 일에 대해 호모 그래피가 좋은 모델입니다. 
+호모 그래피는 3D 정보를 필요로하지 않기 때문에 무작위로 샘플링하여 2D 이미지에 쉽게 적용 할 수 있습니다. 
+이러한 이유로 동형이 우리의자가 감독 접근 방식의 핵심입니다.  
+  
+f<sub>θ</sub>(·)는 우리가 적용하고자하는 초기 관심 지점 함수, I 입력 이미지, x 결과 관심 지점 및 H 무작위 동질화를 나타내도록합니다.  
+  
+![equation 7](./img/equation7.PNG)
+  
+이상적인 관심 지점 연산자는 동형과 관련하여 공변해야합니다. 
+함수 f<sub>θ</sub>(·)는 출력이 입력과 함께 변환되면 H와 공변합니다. 
+즉, 공변 검출기는 모든 H에 대해 만족할 것입니다.  
+  
+![equation 8](./img/equation8.PNG)  
+  
+호모 그래피 관련 용어를 오른쪽으로 이동하면 다음과 같은 결과가 나타납니다.  
+  
+![equation 9](./img/equation9.PNG)  
+  
+실제로 검출기는 완벽하게 공 변하지 않을 것입니다. 
+방정식 9에서 서로 다른 동형은 서로 다른 관심 지점 x를 가져옵니다. 
+Homographic Adaptation의 기본 아이디어는 충분히 큰 랜덤 H 샘플에 대해 경험적 합계를 수행하는 것입니다 (그림 5 참조). 
+결과적으로 샘플에 대한 집계는 새롭고 개선 된 수퍼 포인트 검출기 F(·)를 생성합니다.  
+  
+![equation 10](./img/equation10.PNG)  
+  
+### 5.2. Choosing Homographies
