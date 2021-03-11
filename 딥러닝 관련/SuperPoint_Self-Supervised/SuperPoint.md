@@ -115,3 +115,51 @@ L2 정규화 된 고정 길이 설명 자의 조밀 한 맵을 출력하기 위�
   
 ![equation 1](./img/equation1.PNG)  
   
+  
+관심 지점 검출기 손실 함수 Lp는 셀 x<sub>hw</sub> ∈ X에 대한 완전 컨볼 루션 교차 엔트로피 손실입니다. 해당 지상 진실 관심 지점 레이블 세트 Y와 개별 항목을 y<sub>hw</sub>라고합니다. 
+손실은 다음과 같습니다.  
+  
+![equation 2](./img/equation2.PNG)  
+  
+![equation 3](./img/equation3.PNG)  
+  
+설명자 손실은 모든 쌍의 설명자 셀에 적용되며, 첫 번째 이미지의 d<sub>hw</sub> ∈ D 및 두 번째 이미지의 d'<sub>h'w'</sub> ∈ D'입니다. 
+(h, w) 셀과 (h', w') 셀 사이의 호모 그래피 유도 대응은 다음과 같이 쓸 수 있습니다.  
+  
+![equation 4](./img/equation4.PNG)  
+  
+여기서 p<sub>hw<sub>는 (h, w) 셀의 중심 픽셀 위치를 나타내고 ![](./img/img1.png)는 셀 위치 p<sub>hw</sub>에 호모 그래피 H를 곱하고 마지막 좌표로 나누는 것을 나타냅니다. 
+일반적으로 유클리드 좌표와 균질 좌표 사이에서 변환 할 때 수행됩니다. 
+우리는 S가있는 한 쌍의 이미지에 대한 전체 대응 집합을 나타냅니다.  
+  
+또한 양수보다 음의 대응이 더 많다는 사실의 균형을 맞추기 위해 가중치 용어 λ<sub>d</sub>를 추가합니다.
+마진 m<sub>p</sub>와 마이너스 m<sub>n</sub>의 힌지 손실을 사용합니다. 
+설명자 손실은 다음과 같이 정의됩니다.  
+  
+![equation 5](./img/equation5.PNG)  
+  
+![equation 6](./img/equation6.PNG)  
+  
+## 4. Synthetic PreTraining
+이 섹션에서는 자체 감독 방식으로 레이블이 지정되지 않은 이미지에 대한 의사 지상 진실 관심 지점 레이블을 생성하기 위해 Homographic Adaptation과 함께 사용되는 MagicPoint라는 기본 감지기 (그림 2a에 표시)를 훈련하는 방법을 설명합니다.  
+  
+### 4.1. Synthetic Shapes
+오늘날 존재하는 관심 지점 레이블 이미지의 큰 데이터베이스는 없습니다. 
+따라서 깊은 관심 지점 감지기를 부트 스트랩하기 위해 먼저 사변형, 삼각형, 선 및 타원의 합성 데이터 렌더링을 통해 단순화 된 2D 지오메트리로 구성된 Synthetic Shapes라는 대규모 합성 데이터 세트를 만듭니다.
+이러한 형태의 예는 그림 4에 나와 있습니다.
+이 데이터 세트에서는 간단한 Y- 접합, L- 접합, T- 접합은 물론 작은 타원의 중심과 선 세그먼트의 끝점으로 관심 지점을 모델링하여 레이블 모호성을 제거 할 수 있습니다.  
+  
+![fig 4](./img/fig4.PNG)
+###### Synthetic Pre-Training. We use our Synthetic Shapes dataset consisting of rendered triangles, quadrilaterals, lines, cubes, checkerboards, and stars each with ground truth corner locations. The dataset is used to train the MagicPoint convolutional neural network, which is more robust to noise when compared to classical detectors.  
+  
+## 4.2. MagicPoint
+우리는 SuperPoint 아키텍처의 검출기 경로 (설명자 헤드 무시)를 사용하고 합성 모양에 대해 훈련합니다. 
+결과 모델을 MagicPoint라고합니다.  
+  
+흥미롭게도 MagicPoint를 Synthetic Shapes 데이터 세트에 대한 FAST [21], Harris corners [8] 및 Shi-Tomasi의“Good Features To Track”[25]과 같은 다른 기존 모서리 감지 접근 방식과 비교하여 평가했을 때 우리의 경우에서 매우 큰 효과를 발견했습니다. 
+Synthetic Shapes 데이터 세트의 1000 개의 홀드 아웃 이미지에서 평균 평균 정밀도 (mAP)를 측정하고 그 결과를 표 2에보고합니다. 
+기존 검출기는 이미징 노이즈가있는 상황에서 어려움을 겪습니다. 
+이에 대한 정 성적 예는 그림 4에 나와 있습니다. 더 자세한 실험은 부록 B에서 찾을 수 있습니다.  
+  
+![tabel 2](./img/tabel2.PNG)  
+  
