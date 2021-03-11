@@ -4,4 +4,59 @@
 패치 기반 신경망과는 달리, 우리의 완전 컨볼 루션 모델은 전체 크기 이미지에서 작동하며 한 번의 순방향 패스에서 픽셀 수준 관심 지점 위치 및 관련 설명자를 공동으로 계산합니다. 
 관심 지점 감지 반복성을 높이고 도메인 간 적응 (예 : 합성-실제)을 수행하기위한 다중 스케일, 다중 호모 그래피 접근 방식 인 Homographic Adaptation을 소개합니다. 
 Homographic Adaptation을 사용하여 MS-COCO 일반 이미지 데이터 세트에 대해 학습 된 모델은 초기 사전 조정 된 심층 모델 및 기타 기존의 모서리 감지기보다 훨씬 더 풍부한 관심 지점 집합을 반복적으로 감지 할 수 있습니다. 
-최종 시스템은 LIFT, SIFT 및 ORB와 비교할 때 HPatch에 대한 최신 동형 추정 결과를 제공합니다.
+최종 시스템은 LIFT, SIFT 및 ORB와 비교할 때 HPatch에 대한 최신 동형 추정 결과를 제공합니다.  
+  
+## 1. Introduction
+SLAM (Simultaneous Localization and Mapping), SfM (Structure-from-Motion), 카메라 보정 및 이미지 일치와 같은 기하학적 컴퓨터 비전 작업의 첫 번째 단계는 이미지에서 관심 지점을 추출하는 것입니다. 
+관심 지점은 안정적이고 다양한 조명 조건 및 관점에서 반복 가능한 이미지의 2D 위치입니다.
+Multiple View Geometry [9]로 알려진 수학 및 컴퓨터 비전의 하위 분야는 관심 지점을 이미지에서 안정적으로 추출하고 일치시킬 수 있다는 가정을 바탕으로 구축 된 정리 및 알고리즘으로 구성됩니다. 
+그러나 대부분의 실제 컴퓨터 비전 시스템에 대한 입력은 이상적인 지점 위치가 아닌 원시 이미지입니다.  
+  
+컨볼 루션 신경망은 이미지를 입력으로 요구하는 거의 모든 작업에서 수작업으로 설계된 표현보다 우수한 것으로 나타났습니다. 
+특히, 2D "키포인트"또는 "랜드 마크"를 예측하는 완전 컨볼 루션 신경망은 사람 포즈 추정 [31], 물체 감지 [14], 방 레이아웃 추정 [12]과 같은 다양한 작업에 대해 잘 연구되어 있습니다. 
+이러한 기술의 핵심은 사람 어노 테이터가 레이블을 지정한 2D Ground Truth 위치의 대규모 데이터 세트입니다.  
+   
+관심 지점 감지를 대규모지도 머신 러닝 문제로 유사하게 공식화하고이를 감지하도록 최신 컨볼 루션 신경망 아키텍처를 훈련시키는 것은 자연스러운 것처럼 보입니다.
+안타깝게도 네트워크가 입가 또는 왼쪽 발목과 같은 신체 부위를 감지하도록 훈련 된 인체 키포인트 추정과 같은 의미 론적 작업과 비교할 때 관심 지점 감지 개념은 의미 상 잘못 정의되어 있습니다. 
+따라서 관심 지점에 대한 강력한 감독으로 컨볼 루션 신경망을 훈련하는 것은 중요하지 않습니다.  
+  
+실제 이미지에서 관심 지점을 정의하기 위해 사람의 감독을 사용하는 대신자가 훈련을 사용하는자가 감독 솔루션을 제시합니다. 
+우리의 접근 방식에서는 대규모 인간 주석 작업이 아닌 관심 지점 감지기 자체가 감독하는 실제 이미지에서 의사 지상 진실 관심 지점 위치의 대규모 데이터 세트를 만듭니다.  
+  
+![fig 2](./img/fig2.PNG)
+###### [fig 2] Self-Supervised Training Overview. In our self-supervised approach, we (a) pre-train an initial interest point detector on synthetic data and (b) apply a novel Homographic Adaptation procedure to automatically label images from a target, unlabeled domain. The generated labels are used to (c) train a fully-convolutional network that jointly extracts interest points and descriptors from an image.
+  
+가상 현실의 관심 지점을 생성하기 위해 먼저 Synthetic Shapes (그림 2a 참조)라는 합성 데이터 세트에서 만든 수백만 개의 예제에 대해 완전 컨볼 루션 신경망을 훈련합니다. 
+합성 데이터 세트는 관심 지점 위치가 모호하지 않은 단순한 기하학적 모양으로 구성됩니다. 
+결과적으로 훈련 된 탐지기를 MagicPoint라고 부릅니다. 
+이는 합성 데이터 세트에서 기존의 관심 지점 탐지기보다 훨씬 뛰어난 성능을 발휘합니다 (섹션 4 참조). 
+MagicPoint는 도메인 적응의 어려움에도 불구하고 실제 이미지에서 놀라운 성능을 발휘합니다 [7]. 
+그러나 다양한 이미지 텍스처 및 패턴에 대한 기존의 관심 지점 감지기와 비교할 때 MagicPoint는 많은 잠재적 관심 지점 위치를 놓칩니다. 
+실제 이미지의 성능 격차를 해소하기 위해 우리는 다중 스케일, 다중 변환 기술인 Homographic Adaptation을 개발했습니다.  
+  
+Homographic Adaptation은 관심 지점 감지기의자가지도 학습을 가능하게하도록 설계되었습니다. 
+입력 이미지를 여러 번 왜곡하여 관심 지점 감지기가 다양한 관점과 배율에서 장면을 볼 수 있도록합니다 (섹션 5 참조). 
+우리는 MagicPoint 감지기와 함께 Homographic Adaptation을 사용하여 감지기의 성능을 높이고 의사 지상 진실 관심 지점을 생성합니다 (그림 2b 참조). 
+그 결과 탐지는 더 반복 가능하며 더 큰 자극 세트에서 발생합니다. 
+따라서 결과 검출기를 SuperPoint라고 명명했습니다.  
+  
+견고하고 반복 가능한 관심 지점을 감지 한 후 가장 일반적인 단계는 이미지 일치와 같은 더 높은 수준의 의미 작업을 위해 각 지점에 고정 차원 설명자 벡터를 연결하는 것입니다. 
+따라서 마지막으로 SuperPoint를 디스크립터 서브 네트워크와 결합합니다 (그림 2c 참조). 
+수퍼 포인트 아키텍처는 다중 스케일 기능을 추출하는 컨볼 루션 레이어의 깊은 스택으로 구성되므로 관심 포인트 설명자를 계산하는 추가 서브 네트워크와 관심 포인트 네트워크를 결합하는 것이 간단합니다 (섹션 3 참조). 
+결과 시스템은 그림 1에 나와 있습니다.  
+  
+![fig 1](./img/fig1.PNG)
+###### [fig 1] Figure 1. SuperPoint for Geometric Correspondences. We present a fully-convolutional neural network that computes SIFTlike 2D interest point locations and descriptors in a single forward pass and runs at 70 FPS on 480×640 images with a Titan X GPU.  
+  
+## 2. Related Work
+기존의 관심 지점 감지기는 철저히 평가되었습니다 [24, 16]. 
+FAST 코너 검출기 [21]는 고속 코너 검출을 머신 러닝 문제로 캐스팅 한 최초의 시스템이었으며 스케일 불변 특성 변환 (SIFT [15])은 컴퓨터 비전에서 여전히 ​​가장 잘 알려진 전통적인 로컬 특성 설명 자일 것입니다.  
+  
+SuperPoint 아키텍처는 관심 지점 감지 및 설명자 학습에 딥 러닝을 적용하는 최근 발전에서 영감을 받았습니다. 
+이미지 하위 구조를 일치시킬 수있는 능력에서 우리는 UCN [3]과 비슷하지만 DeepDesc ​​[6] 정도는 비슷합니다. 
+그러나 둘 다 관심 지점 감지를 수행하지 않습니다. 
+반면에 LIFT [32], 최근 도입 된 SIFT의 컨볼 루션 대체는 기존의 패치 기반 탐지에 가깝고 레시피를 설명합니다.
+LIFT 파이프 라인에는 관심 지점 감지, 방향 추정 및 설명자 계산이 포함되어 있지만 추가로 기존 SfM 시스템의 감독이 필요합니다. 
+이러한 차이점은 표 1에 요약되어 있습니다.  
+  
+![table 1](./img/table1.PNG)
