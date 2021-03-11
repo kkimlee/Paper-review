@@ -84,4 +84,4 @@ Homographic Adaptation에 대한 유사한 접근 방식은 Honari et al. "등�
 인코더는 3 개의 최대 풀링 레이어를 사용하므로 H × W 크기의 이미지에 대해 H<sub>c</sub> = H / 8 및 W<sub>c</sub> = W / 8을 정의 할 수 있습니다.
 저 차원 출력의 픽셀을 "셀"이라고합니다. 
 여기서 3 개의 2 × 인코더에서 2 개의 비 중첩 최대 풀링 작업으로 인해 8 x 8 픽셀 셀이 생성됩니다. 
-인코더는 입력 이미지 I ∈ R<sup>H×W</sup>를 더 작은 공간 차원과 더 큰 채널 깊이 (즉, H<sub>c</sub> <H, W<sub>c</sub> <W 및 F> 1)로 중간 텐서 B ∈ R<sup>H<sub>c</sub></sup>xW<sub>c</sub>xF</sup>에 매핑합니다.
+인코더는 입력 이미지 I ∈ R<sup>H×W</sup>를 더 작은 공간 차원과 더 큰 채널 깊이 (즉, H<sub>c</sub> <H, W<sub>c</sub> <W 및 F> 1)로 중간 텐서 B ∈ R<sup>H<sub>c</sub>xW<sub>c</sub>xF</sup>에 매핑합니다.
