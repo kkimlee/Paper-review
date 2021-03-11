@@ -85,3 +85,33 @@ Homographic Adaptation에 대한 유사한 접근 방식은 Honari et al. "등�
 저 차원 출력의 픽셀을 "셀"이라고합니다. 
 여기서 3 개의 2 × 인코더에서 2 개의 비 중첩 최대 풀링 작업으로 인해 8 x 8 픽셀 셀이 생성됩니다. 
 인코더는 입력 이미지 I ∈ R<sup>H×W</sup>를 더 작은 공간 차원과 더 큰 채널 깊이 (즉, H<sub>c</sub> <H, W<sub>c</sub> <W 및 F> 1)로 중간 텐서 B ∈ R<sup>H<sub>c</sub>xW<sub>c</sub>xF</sup>에 매핑합니다.
+
+### 3.2. Interest Point Decoder
+관심 지점 감지의 경우 출력의 각 픽셀은 입력의 해당 픽셀에 대한 "점성"확률에 해당합니다. 
+조밀 한 예측을위한 표준 네트워크 설계에는 인코더-디코더 쌍이 포함됩니다. 
+여기서 공간 해상도는 풀링 또는 스트라이드 컨볼 루션을 통해 감소한 다음 SegNet [1]에서와 같이 업 컨볼 루션 작업을 통해 전체 해상도로 다시 업 샘플링됩니다.
+불행히도 업 샘플링 레이어는 많은 양의 계산을 추가하는 경향이 있고 원하지 않는 바둑판 아티팩트 [18]를 도입 할 수 있으므로 모델 계산을 줄이기 위해 명시 적 디코더 1로 관심 지점 감지 헤드를 설계했습니다.  
+  
+관심 지점 검출기 헤드는 X ∈ R<sup>H<sub>c</sub> × W<sub>c<sub> × 65</sup>를 계산하고 텐서 크기의 R<sup>H × W</sup>를 출력합니다. 
+65 개 채널은 겹치지 않는 로컬 8 × 8 그리드 픽셀 영역과 추가 "관심 지점 없음"쓰레기통에 해당합니다. 
+채널 별 소프트 맥스 후 쓰레기통 치수가 제거되고 R<sup>H<sub>c</sub> × W<sub>c</sub> × 64</sup> ⇒ RH × W 모양 변경이 수행됩니다.  
+  
+### 3.3. Descriptor Decoder
+디스크립터 헤드는 D ∈ R<sup>H<sub>c</sub> × W<sub>c</sub> × D</sup>를 계산하고 R<sup>H × W × D<sup> 크기의 텐서를 출력합니다. 
+L2 정규화 된 고정 길이 설명 자의 조밀 한 맵을 출력하기 위해 UCN [3]과 유사한 모델을 사용하여 먼저 반 조밀 한 설명자 그리드 (예 : 8 픽셀마다 하나씩)를 출력합니다. 
+설명자를 조밀하지 않고 반 조밀하게 학습하면 훈련 메모리가 줄어들고 런타임이 다루기 쉽습니다.
+그런 다음 디코더는 디스크립터의 쌍 입방 보간을 수행 한 다음 L2는 활성화를 단위 길이로 정규화합니다. 
+이 고정 된 비 학습 설명자 디코더는 그림 3에 나와 있습니다.  
+  
+![fig 3](./img/fig3.PNG)
+###### [fig 3] SuperPoint Decoders. Both decoders operate on a shared and spatially reduced representation of the input. To keep the model fast and easy to train, both decoders use non-learned upsampling to bring the representation back to R<sup>H×W</sup>.  
+  
+### 3.4. Loss Functions
+최종 손실은 두 개의 중간 손실의 합입니다. 
+하나는 관심 지점 검출기 L<sub>p</sub> 용이고 다른 하나는 설명자 L<sub>d</sub> 용입니다. 
+우리는 (a) 의사 지상 진실 관심 지점 위치와 (b) 두 이미지를 연관시키는 무작위로 생성 된 호모 그래피 H의 지상 진실 대응을 모두 갖는 합성 적으로 뒤틀린 이미지 쌍을 사용합니다. 
+이를 통해 그림 2c에 표시된 것처럼 한 쌍의 이미지가 주어지면 두 손실을 동시에 최적화 할 수 있습니다. 
+최종 손실의 균형을 맞추기 위해 λ를 사용합니다.  
+  
+![equation 1](./img/equation1.PNG)  
+  
