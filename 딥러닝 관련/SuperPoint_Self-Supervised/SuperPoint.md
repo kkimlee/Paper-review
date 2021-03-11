@@ -97,7 +97,7 @@ Homographic Adaptation에 대한 유사한 접근 방식은 Honari et al. "등�
 채널 별 소프트 맥스 후 쓰레기통 치수가 제거되고 R<sup>H<sub>c</sub> × W<sub>c</sub> × 64</sup> ⇒ RH × W 모양 변경이 수행됩니다.  
   
 ### 3.3. Descriptor Decoder
-디스크립터 헤드는 D ∈ R<sup>H<sub>c</sub> × W<sub>c</sub> × D</sup>를 계산하고 R<sup>H × W × D<sup> 크기의 텐서를 출력합니다. 
+디스크립터 헤드는 D ∈ R<sup>H<sub>c</sub> × W<sub>c</sub> × D</sup>를 계산하고 R<sup>H × W × D</sup> 크기의 텐서를 출력합니다. 
 L2 정규화 된 고정 길이 설명 자의 조밀 한 맵을 출력하기 위해 UCN [3]과 유사한 모델을 사용하여 먼저 반 조밀 한 설명자 그리드 (예 : 8 픽셀마다 하나씩)를 출력합니다. 
 설명자를 조밀하지 않고 반 조밀하게 학습하면 훈련 메모리가 줄어들고 런타임이 다루기 쉽습니다.
 그런 다음 디코더는 디스크립터의 쌍 입방 보간을 수행 한 다음 L2는 활성화를 단위 길이로 정규화합니다. 
